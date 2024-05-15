@@ -15,12 +15,12 @@ from sendgrid.helpers.mail import Mail
 
 
 users_dict = {}
-PORT = 5454
+PORT = 5458
 msg_pending = False
 threads = []
 socks = []
 # Set your SendGrid API key
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = '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'
 
 # Initialize the SendGrid client
 sg = SendGridAPIClient(SENDGRID_API_KEY)
@@ -149,6 +149,7 @@ def send_email(sender_email, recipient_email, subject, body,socket):
         response = sg.send(message)
         send_with_size(socket,b'email sent')
     except Exception as e:
+        print (e)
         send_with_size(socket,b'email not sent')
 
 def Forgot(sock,t,data):
@@ -257,7 +258,8 @@ def handle_client(sock, t, addr):
 def close_client(sock,t):
     print(f"client number {t} has disconnected")
     sock.close()
-    socks.remove(sock)
+    if sock in socks:
+        socks.remove(sock)
 def main(port):
     global all_to_die
     """
@@ -278,7 +280,6 @@ def main(port):
         print('\nMain thread: before accepting ...')
         cli_sock, addr = srv_sock.accept()
         print(f"client {i} has connected")
-        socks.append(cli_sock)
         t = threading.Thread(target=handle_client, args=(cli_sock, str(i), addr))
         t.start()
         i += 1
