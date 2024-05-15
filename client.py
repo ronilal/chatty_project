@@ -13,8 +13,8 @@ import numpy as np
 import sys
 
 
-IP ='10.0.0.36'
-PORT = 5454
+IP ='10.0.0.42'
+PORT = 5458
 
 
 
